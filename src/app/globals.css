@@ -5,3 +5,15 @@
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes slowZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+.animate-zoom {
+  animation: slowZoom 15s ease-in-out infinite alternate;
+}
