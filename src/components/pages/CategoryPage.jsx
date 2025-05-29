@@ -20,7 +20,7 @@ export default function CategorySection({ categories, categoryRef }) {
       </h2>
 
       {/* Cards */}
-      <div className='relative z-10 max-w-7xl mx-auto grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:gap-0 justify-items-center'>
+      <div className='relative z-10 max-w-[58rem] mx-auto grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:gap-0 justify-items-center'>
         {categories.map(
           ({ id, first, last, description, img, figCapt, points }) => (
             <motion.div
