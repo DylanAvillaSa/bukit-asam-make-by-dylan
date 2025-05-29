@@ -26,33 +26,33 @@ import {
   Phone,
   Twitter,
 } from "lucide-react";
-import {
-  scrollToHome,
-  scrollToAboutUs,
-  scrollToCategory,
-  scrollToIssue,
-  scrollToSchedule,
-} from "@/helper/scrollerFunc";
+import emailjs from "@emailjs/browser";
 import IssuePage from "@/components/pages/IssuePage";
 import CategorySection from "@/components/pages/CategoryPage";
 
 const IntroductionPage = () => {
+  const form = useRef(null);
   const homeRef = useRef(null);
   const aboutRef = useRef(null);
   const issueRef = useRef(null);
   const categoryRef = useRef(null);
   const scheduleRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const [show, setShow] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    nama_peserta: "",
     phone: "",
     message: "",
+    kategori: "",
     file: null,
   });
   const [isVisible, setIsVisible] = useState(false);
+  const [pesertaList, setPesertaList] = useState([{ nama: "" }]);
   // Intersection observer hooks
   const [refText, inViewText] = useInView({
     triggerOnce: true,
@@ -69,7 +69,14 @@ const IntroductionPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const updatedList = [...pesertaList];
+    updatedList[index].nama = value;
+    setPesertaList(updatedList);
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAddPeserta = () => {
+    setPesertaList([...pesertaList, { nama: "" }]);
   };
 
   const handleFileChange = (e) => {
@@ -79,17 +86,31 @@ const IntroductionPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    // TODO: Kirim formData ke backend atau API email (Formspree, Nodemailer, dsb)
-    console.log("Submit:", formData);
-    setFormData({
-      email: "",
-      file: null,
-      message: "",
-      name: "",
-      phone: "",
-    });
-    alert("Proposal berhasil dikirim!");
+    try {
+      const res = await emailjs.sendForm(
+        "service_xyy2z6i",
+        "template_ic9tfeo",
+        form.current,
+        "GpmAxhMZlixLosrOM"
+      );
+
+      if (res.status === 200) {
+        alert("Berhasil mengirim proposal");
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+      setFormData({
+        email: "",
+        file: null,
+        message: "",
+        name: "",
+        phone: "",
+      });
+    }
   };
 
   const scrollToHome = () => {
@@ -669,6 +690,7 @@ const IntroductionPage = () => {
           </p>
 
           <form
+            ref={form}
             onSubmit={handleSubmit}
             className='space-y-6'>
             <div>
@@ -710,17 +732,34 @@ const IntroductionPage = () => {
               />
             </div>
 
-            <div>
-              <label className='block font-medium text-gray-700 mb-1'>
+            <div className='space-y-4'>
+              <label className='block font-medium text-gray-700 text-lg'>
                 Nama Peserta
               </label>
-              <input
-                type='text'
-                name='nama_peserta'
-                required
-                onChange={handleChange}
-                className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CD4247]'
-              />
+
+              {pesertaList.map((peserta, index) => (
+                <div
+                  key={index}
+                  className='flex items-center gap-3'>
+                  <input
+                    type='text'
+                    name={`nama_peserta_${index}`}
+                    value={peserta.nama}
+                    onChange={(e) => handleChange(index, e.target.value)}
+                    required
+                    placeholder={`Peserta ${index + 1}`}
+                    className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CD4247]'
+                  />
+                  {index === pesertaList.length - 1 && (
+                    <button
+                      type='button'
+                      onClick={handleAddPeserta}
+                      className='p-2 px-4 bg-[#CD4247] hover:bg-[#b63a3e] transition rounded-xl text-white font-semibold text-xl'>
+                      +
+                    </button>
+                  )}
+                </div>
+              ))}
             </div>
 
             <div>
@@ -747,8 +786,10 @@ const IntroductionPage = () => {
                 onChange={handleChange}
                 className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CD4247]'>
                 <option value=''>Jenis kategori</option>
-                <option value=''>A. Ide Konseptual</option>
-                <option value=''>B. Implementasi Proyek</option>
+                <option value='Ide Konseptual'>A. Ide Konseptual</option>
+                <option value='Implementasi Proyek'>
+                  B. Implementasi Proyek
+                </option>
               </select>
             </div>
 
