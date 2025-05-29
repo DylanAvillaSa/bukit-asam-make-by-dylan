@@ -82,7 +82,7 @@ Usulan gagasan proyek sosial berdasarkan kajian atau studi kelayakan pengalaman 
       "Dana dari PT Bukit Asam Tbk digunakan untuk mendanai program yang diusulkan.",
     ],
     icon: "🎓",
-    img: "/idea.png",
+    img: "/ide.png",
     figCapt: "IDEAS",
   },
   {
@@ -90,6 +90,7 @@ Usulan gagasan proyek sosial berdasarkan kajian atau studi kelayakan pengalaman 
     first: `Implementasi`,
     last: `Proyek`,
     img: "/projek.png",
+    figCapt: "PROYEK",
     description: `Usulan proyek sosial berdasar proyek atau program
 yang sudah dimulai atau dilaksanakan, dengan ketentuan :`,
     points: [

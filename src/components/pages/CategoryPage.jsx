@@ -98,7 +98,7 @@ export default function CategorySection({ categories, categoryRef }) {
                   src={selectedCategory.img || ""}
                   alt='category'
                   fill
-                  className='object-cover rounded-t-3xl'
+                  className='object-contain h-auto rounded-t-3xl w-full '
                 />
                 <button
                   onClick={closePopup}
