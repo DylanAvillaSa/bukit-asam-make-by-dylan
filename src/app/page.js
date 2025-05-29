@@ -67,12 +67,17 @@ const IntroductionPage = () => {
     if (inView) setIsVisible(true);
   }, [inView]);
 
-  const handleChange = (e) => {
+  const handleChange = (index, e) => {
     const { name, value } = e.target;
+
     const updatedList = [...pesertaList];
     updatedList[index].nama = value;
     setPesertaList(updatedList);
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleAddPeserta = () => {
@@ -745,7 +750,7 @@ const IntroductionPage = () => {
                     type='text'
                     name={`nama_peserta_${index}`}
                     value={peserta.nama}
-                    onChange={(e) => handleChange(index, e.target.value)}
+                    onChange={(e) => handleChange(index, e)}
                     required
                     placeholder={`Peserta ${index + 1}`}
                     className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#CD4247]'
