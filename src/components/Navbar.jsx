@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function NavigationBar({
   scrollToHome,
   scrollToAboutUs,
-  scrollToProgram,
   scrollToIssue,
   scrollToCategory,
   scrollToSchedule,
@@ -67,38 +66,33 @@ export default function NavigationBar({
   };
 
   return (
-    <nav className='fixed top-0 left-0 right-0 flex justify-between items-center border-b border-slate-200 p-4 bg-white z-50'>
+    <nav className="fixed top-0 left-0 right-0 flex justify-between items-center border-b border-slate-200 p-4 bg-white z-50">
       {/* Logo */}
-      <button
-        className='cursor-pointer z-50'
-        onClick={scrollToHome}>
-        <Image
-          src='/logo.png'
-          width={205}
-          height={205}
-          alt='logo'
-        />
+      <button className="cursor-pointer z-50" onClick={scrollToHome}>
+        <Image src="/logo.png" width={205} height={205} alt="logo" />
       </button>
 
       {/* Desktop menu */}
-      <div className='relative hidden md:block'>
+      <div className="relative hidden md:block">
         {/* Highlight bar */}
         <div
-          className='absolute top-0 h-10 rounded bg-[#0F2F60] transition-all duration-500 ease-in-out -z-10'
+          className="absolute top-0 h-10 rounded bg-[#0F2F60] transition-all duration-500 ease-in-out -z-10"
           style={{
             transform: `translateX(${isActive.translateX}px)`,
             width: `${isActive.width}px`,
-          }}></div>
+          }}
+        ></div>
 
         {/* Menu */}
-        <ul className='flex gap-5 text-sm relative'>
+        <ul className="flex gap-5 text-[17px] relative">
           {navItems.map((item) => (
             <li
               key={item}
               onClick={(e) => handleClick(e, item)}
               className={`p-2 rounded cursor-pointer duration-300 ease-linear select-none ${
                 isActive.name === item ? "text-white" : "text-[#0F2F60]"
-              }`}>
+              }`}
+            >
               {item}
             </li>
           ))}
@@ -108,21 +102,22 @@ export default function NavigationBar({
       {/* Hamburger button mobile */}
       <button
         onClick={() => setMobileMenuOpen((prev) => !prev)}
-        className='md:hidden flex flex-col justify-center items-center gap-1 w-8 h-8 z-50'
-        aria-label='Toggle Menu'>
+        className="md:hidden flex flex-col justify-center items-center gap-1 w-8 h-8 z-50"
+        aria-label="Toggle Menu"
+      >
         <motion.span
           animate={mobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-          className='block w-8 h-1 bg-[#0F2F60] rounded'
+          className="block w-8 h-1 bg-[#0F2F60] rounded"
         />
         <motion.span
           animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-          className='block w-8 h-1 bg-[#0F2F60] rounded'
+          className="block w-8 h-1 bg-[#0F2F60] rounded"
         />
         <motion.span
           animate={
             mobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }
           }
-          className='block w-8 h-1 bg-[#0F2F60] rounded'
+          className="block w-8 h-1 bg-[#0F2F60] rounded"
         />
       </button>
 
@@ -130,13 +125,14 @@ export default function NavigationBar({
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            key='mobile-menu'
-            className='fixed top-16 right-0 w-60 bg-white shadow-lg rounded-l-lg border border-gray-200 h-[calc(100vh-4rem)] z-40 flex flex-col p-6'
+            key="mobile-menu"
+            className="fixed top-16 right-0 w-60 bg-white shadow-lg rounded-l-lg border border-gray-200 h-[calc(100vh-4rem)] z-40 flex flex-col p-6"
             variants={menuVariants}
-            initial='hidden'
-            animate='visible'
-            exit='exit'>
-            <ul className='flex flex-col gap-4 text-[#0F2F60] font-semibold'>
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <ul className="flex flex-col gap-4 text-[#0F2F60] font-semibold">
               {navItems.map((item) => (
                 <li
                   key={item}
@@ -144,7 +140,8 @@ export default function NavigationBar({
                     handleClick(e, item);
                     setMobileMenuOpen(false);
                   }}
-                  className='cursor-pointer select-none p-2 rounded hover:bg-[#0F2F60] hover:text-white transition-colors'>
+                  className="cursor-pointer select-none p-2 rounded hover:bg-[#0F2F60] hover:text-white transition-colors"
+                >
                   {item}
                 </li>
               ))}
