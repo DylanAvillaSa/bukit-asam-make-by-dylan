@@ -2,6 +2,7 @@
 
 import NavigationBar from "@/components/Navbar";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -15,6 +16,7 @@ import {
   syaratUmum,
 } from "@/service/data_description";
 import { useInView } from "react-intersection-observer";
+import FooterNavigation from "@/components/FooterNav";
 import {
   CheckCircle,
   Paperclip,
@@ -29,8 +31,10 @@ import {
 import emailjs from "@emailjs/browser";
 import IssuePage from "@/components/pages/IssuePage";
 import CategorySection from "@/components/pages/CategoryPage";
+import ReportPage from "@/components/pages/ReportPage";
 
 const IntroductionPage = () => {
+  const router = useRouter();
   const form = useRef(null);
   const homeRef = useRef(null);
   const aboutRef = useRef(null);
@@ -53,6 +57,7 @@ const IntroductionPage = () => {
   });
   const [isVisible, setIsVisible] = useState(false);
   const [pesertaList, setPesertaList] = useState([{ nama: "" }]);
+  const isInView = useInView(ref, { once: true });
   // Intersection observer hooks
   const [refText, inViewText] = useInView({
     triggerOnce: true,
@@ -136,6 +141,13 @@ const IntroductionPage = () => {
 
   const scrollToSchedule = () => {
     scheduleRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToSubmit = () => {
+    const section = document.getElementById("submit");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const fadeUp = {
@@ -286,6 +298,7 @@ const IntroductionPage = () => {
 
             {/* Call to Action Button */}
             <motion.button
+              onClick={() => router.push("/about-us")}
               className='mt-12 px-10 py-4 bg-gradient-to-r from-[#CD4247] via-[#A02F35] to-[#7C2428] text-white font-semibold rounded-2xl shadow-lg hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-[#A02F35] transition-transform duration-300'
               whileHover={{
                 scale: 1.07,
@@ -517,156 +530,71 @@ const IntroductionPage = () => {
         `}</style>
       </section>
 
-      {/* report section */}
-      <section className='w-full px-6 md:px-12 py-24 bg-white  relative overflow-hidden'>
-        {/* Background Accessories */}
-        <div className='absolute top-0 left-0 w-64 h-64 bg-pink-300 opacity-20 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2 z-0' />
+      <ReportPage
+        ref={ref}
+        show={show}
+        syaratKategori={syaratKategori}
+        syaratUmum={syaratUmum}
+        fadeUp={fadeUp}
+      />
 
-        <motion.div
-          ref={ref}
-          animate={show ? "visible" : "hidden"}
-          className='relative z-10 max-w-5xl mx-auto'>
-          <motion.h2
-            className='text-3xl md:text-4xl font-bold text-center text-[#0F2F60] mb-12'
-            initial={{ opacity: 0, y: 20 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}>
-            <span className='text-[#CD4247]'>Persyaratan</span> Peserta
-          </motion.h2>
-
-          {/* A. Syarat Umum */}
-          <motion.div
-            className='mb-12'
-            initial={{ opacity: 0, y: 30 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}>
-            <h3 className='text-xl md:text-2xl font-semibold text-[#0F2F60] mb-4'>
-              A. Syarat Umum Peserta
-            </h3>
-            <ul className='space-y-4 pl-2'>
-              {syaratUmum.map((item, i) => (
-                <motion.li
-                  key={i}
-                  className='flex items-start gap-3 text-gray-700 text-base md:text-lg'
-                  variants={fadeUp}
-                  custom={i}>
-                  <CheckCircle className='text-[#CD4247] w-6 h-6 mt-1' />
-                  <span>{item}</span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* B. Syarat Khusus */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}>
-            <h3 className='text-xl md:text-2xl font-semibold text-[#0F2F60] mb-6'>
-              B. Syarat Khusus Peserta Per-Kategori
-            </h3>
-
-            <div className='grid md:grid-cols-2 gap-10'>
-              {/* Kategori Ide Konseptual */}
-              <div className='p-6 rounded-xl shadow-md border border-gray-100 bg-white'>
-                <h4 className='text-lg font-bold text-[#CD4247] mb-4'>
-                  1. Peserta Kategori Ide Konseptual
-                </h4>
-                <ul className='space-y-3'>
-                  {syaratKategori.konsep.map((item, i) => (
-                    <motion.li
-                      key={i}
-                      className='flex items-start gap-3 text-gray-700'
-                      variants={fadeUp}
-                      custom={i + 5}>
-                      <CheckCircle className='text-[#CD4247] w-5 h-5 mt-1' />
-                      <span>{item}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Kategori Implementasi */}
-              <div className='p-6 rounded-xl shadow-md border border-gray-100 bg-white'>
-                <h4 className='text-lg font-bold text-[#CD4247] mb-4'>
-                  2. Peserta Kategori Implementasi Proyek
-                </h4>
-                <ul className='space-y-3'>
-                  {syaratKategori.implementasi.map((item, i) => (
-                    <motion.li
-                      key={i}
-                      className='flex items-start gap-3 text-gray-700'
-                      variants={fadeUp}
-                      custom={i + 10}>
-                      <CheckCircle className='text-[#CD4247] w-5 h-5 mt-1' />
-                      <span>{item}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* end section */}
+      {/* Proposal section */}
       <section className='w-full px-6 md:px-12 py-24 bg-[#0F2F60] relative overflow-hidden'>
-        {/* Background Accessories */}
-        <div className='absolute bottom-[-100px] right-[-100px] w-72 h-72 bg-blue-400 opacity-20 blur-3xl rounded-full z-0' />
+        {/* Background Blur Aksesoris */}
+        <div className='absolute bottom-[-80px] right-[-80px] w-72 h-72 bg-blue-400 opacity-20 blur-3xl rounded-full z-0' />
+        <div className='absolute top-[-60px] left-[-60px] w-60 h-60 bg-yellow-300 opacity-10 blur-3xl rounded-full z-0' />
 
         <motion.div
           ref={ref}
           initial='hidden'
-          animate={show ? "visible" : "hidden"}
+          animate={isInView ? "visible" : "hidden"}
           className='relative z-10 max-w-5xl mx-auto'>
           <motion.h2
             className='text-3xl md:text-4xl font-bold text-center text-white mb-12'
             initial={{ opacity: 0, y: 20 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}>
-            Ketentuan <span className='text-[#CD4247]'>Proposal</span> &
-            <span className='text-[#FEC40C]'> Kriteria </span> Program
+            Ketentuan <span className='text-[#CD4247]'>Proposal</span> &{" "}
+            <span className='text-[#FEC40C]'>Kriteria</span> Program
           </motion.h2>
 
-          {/* Ketentuan Proposal */}
+          {/* Bagian A - Ketentuan Proposal */}
           <motion.div
             className='mb-16'
-            initial={{ opacity: 0, y: 30 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}>
-            <h3 className='text-xl md:text-2xl font-semibold text-white mb-4'>
+            initial='hidden'
+            animate={isInView ? "visible" : "hidden"}>
+            <h3 className='text-xl md:text-2xl font-semibold text-white mb-6'>
               A. Ketentuan Proposal
             </h3>
-            <ul className='space-y-4 pl-2'>
-              {ketentuanProposal.map((item, i) => (
+            <ul className='space-y-4'>
+              {ketentuanProposal.map((item, index) => (
                 <motion.li
-                  key={i}
-                  className='flex items-start gap-3 text-gray-50 text-base md:text-lg'
+                  key={index}
+                  className='flex items-start text-gray-100 text-base md:text-lg'
                   variants={fadeUp}
-                  custom={i}>
-                  <CheckCircle className='text-[#CD4247] w-6 h-6 mt-1' />
+                  custom={index}>
+                  <CheckCircle className='min-w-[20px] w-5 h-5 text-[#CD4247] mt-[2px] mr-3 shrink-0' />
                   <span>{item}</span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Kriteria Program */}
+          {/* Bagian B - Kriteria Program */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={show ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}>
-            <h3 className='text-xl md:text-2xl font-semibold text-white mb-4'>
+            initial='hidden'
+            animate={isInView ? "visible" : "hidden"}>
+            <h3 className='text-xl md:text-2xl font-semibold text-white mb-6'>
               B. Kriteria Penilaian Program
             </h3>
-            <ul className='space-y-4 pl-2'>
-              {kriteriaProgram.map((item, i) => (
+            <ul className='space-y-4'>
+              {kriteriaProgram.map((item, index) => (
                 <motion.li
-                  key={i}
-                  className='flex items-start gap-3 text-gray-50 text-base md:text-lg'
+                  key={index}
+                  className='flex items-start text-gray-100 text-base md:text-lg'
                   variants={fadeUp}
-                  custom={i + 5}>
-                  <CheckCircle className='text-[#CD4247] w-6 h-6 mt-1' />
+                  custom={index + 5}>
+                  <CheckCircle className='min-w-[20px] w-5 h-5 text-[#CD4247] mt-[2px] mr-3 shrink-0' />
                   <span>{item}</span>
                 </motion.li>
               ))}
@@ -863,39 +791,14 @@ const IntroductionPage = () => {
           </div>
 
           {/* Navigasi */}
-          <div>
-            <h4 className='text-xl font-semibold mb-4'>Navigasi</h4>
-            <ul className='space-y-2 text-gray-300'>
-              <li>
-                <a
-                  href='#about'
-                  className='hover:text-white transition'>
-                  Tentang Kami
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#schedule'
-                  className='hover:text-white transition'>
-                  Jadwal Kompetisi
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#category'
-                  className='hover:text-white transition'>
-                  Kategori
-                </a>
-              </li>
-              <li>
-                <a
-                  href='#submit'
-                  className='hover:text-white transition'>
-                  Submit Proposal
-                </a>
-              </li>
-            </ul>
-          </div>
+          <FooterNavigation
+            scrollToHome={scrollToHome}
+            scrollToAboutUs={scrollToAboutUs}
+            scrollToIssue={scrollToIssue}
+            scrollToCategory={scrollToCategory}
+            scrollToSchedule={scrollToSchedule}
+            scrollToSubmit={scrollToSubmit}
+          />
 
           {/* Kontak & Sosial */}
           <div>

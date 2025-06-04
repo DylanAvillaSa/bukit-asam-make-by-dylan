@@ -1,56 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-export default function NavigationBar({
-  scrollToHome,
-  scrollToAboutUs,
-  scrollToIssue,
-  scrollToCategory,
-  scrollToSchedule,
-}) {
+export default function AboutUsNavBar() {
+  const pathname = usePathname();
   const [isActive, setIsActive] = useState({
-    name: "",
+    name: pathname,
     translateX: 0,
     width: 0,
   });
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
-    "Beranda",
-    "Tentang kami",
-    "Isu sosial",
-    "Kategori",
-    "Jadwal",
-  ];
+  const navItems = [{ name: "Kembali ke beranda", href: "/" }];
 
-  const handleClick = (e, name) => {
+  const handleClick = (e, href, name) => {
     const offset = e.target.offsetLeft;
     const width = e.target.offsetWidth;
 
-    if (name == "Beranda") {
-      scrollToHome();
-    } else if (name == "Tentang kami") {
-      scrollToAboutUs();
-    } else if (name == "Isu sosial") {
-      scrollToIssue();
-    } else if (name == "Kategori") {
-      scrollToCategory();
-    } else if (name == "Jadwal") {
-      scrollToSchedule();
-    }
-
     setIsActive({
-      name,
+      name: href,
       translateX: offset,
       width,
     });
+
+    setMobileMenuOpen(false);
   };
 
-  // Variants animasi untuk menu mobile
   const menuVariants = {
     hidden: { opacity: 0, x: "100%" },
     visible: {
@@ -66,45 +46,48 @@ export default function NavigationBar({
   };
 
   return (
-    <nav className='fixed top-0 left-0 right-0 flex justify-between items-center border-b border-slate-200 p-4 bg-white z-50'>
+    <nav className='fixed top-0 left-0 right-0 flex justify-between items-center border-b border-slate-200 px-6 py-4 bg-white z-50'>
       {/* Logo */}
-      <button
-        className='cursor-pointer z-50'
-        onClick={scrollToHome}>
+      <Link
+        href='/'
+        className='z-50'>
         <Image
           src='/logo.png'
-          width={205}
-          height={205}
+          width={160}
+          height={40}
           alt='logo'
+          priority
         />
-      </button>
+      </Link>
 
       {/* Desktop menu */}
       <div className='relative hidden md:block'>
-        {/* Highlight bar */}
         <div
           className='absolute top-0 h-10 rounded bg-[#0F2F60] transition-all duration-500 ease-in-out -z-10'
           style={{
             transform: `translateX(${isActive.translateX}px)`,
             width: `${isActive.width}px`,
-          }}></div>
-
-        {/* Menu */}
-        <ul className='flex gap-5 text-sm relative'>
-          {navItems.map((item) => (
+          }}
+        />
+        <ul className='flex gap-6 text-sm font-medium'>
+          {navItems.map(({ name, href }) => (
             <li
-              key={item}
-              onClick={(e) => handleClick(e, item)}
-              className={`p-2 rounded cursor-pointer duration-300 ease-linear select-none ${
-                isActive.name === item ? "text-white" : "text-[#0F2F60]"
-              }`}>
-              {item}
+              key={href}
+              className='relative'>
+              <Link
+                href={href}
+                onClick={(e) => handleClick(e, href, name)}
+                className={`p-2 rounded cursor-pointer transition-colors duration-300 ${
+                  isActive.name === href ? "text-white" : "text-[#0F2F60]"
+                }`}>
+                {name}
+              </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Hamburger button mobile */}
+      {/* Hamburger mobile */}
       <button
         onClick={() => setMobileMenuOpen((prev) => !prev)}
         className='md:hidden flex flex-col justify-center items-center gap-1 w-8 h-8 z-50'
@@ -130,21 +113,20 @@ export default function NavigationBar({
         {mobileMenuOpen && (
           <motion.div
             key='mobile-menu'
-            className='fixed top-16 right-0 w-60 bg-white shadow-lg rounded-l-lg border border-gray-200 h-[calc(100vh-4rem)] z-40 flex flex-col p-6'
+            className='fixed top-16 right-0 w-64 bg-white shadow-lg rounded-l-lg border border-gray-200 h-[calc(100vh-4rem)] z-40 flex flex-col p-6'
             variants={menuVariants}
             initial='hidden'
             animate='visible'
             exit='exit'>
-            <ul className='flex flex-col gap-4 text-[#0F2F60] font-semibold'>
-              {navItems.map((item) => (
-                <li
-                  key={item}
-                  onClick={(e) => {
-                    handleClick(e, item);
-                    setMobileMenuOpen(false);
-                  }}
-                  className='cursor-pointer select-none p-2 rounded hover:bg-[#0F2F60] hover:text-white transition-colors'>
-                  {item}
+            <ul className='flex flex-col gap-5 text-[#0F2F60] font-semibold'>
+              {navItems.map(({ name, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    onClick={(e) => handleClick(e, href, name)}
+                    className='p-2 rounded hover:bg-[#0F2F60] hover:text-white transition-colors block'>
+                    {name}
+                  </Link>
                 </li>
               ))}
             </ul>
