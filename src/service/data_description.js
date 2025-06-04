@@ -6,36 +6,21 @@ export const issues = [
     title: "Isu Pendidikan Yang Inklusif",
     description: `
 Menjawab target SDG's yang ke-4 masih menjadi tantangan bangsa Indonesia yang mendasar. Permasalahan pendidikan menyangkut akses pendidikan dasar formal, pendidikan luar sekolah, pendidikan alternatif di wilayah terisolir (remote) dan digitalisasi. Obyek anak-anak dengan keterbatasan: ekonomi, fisik (berkebutuhan khusus), akses sekolah formal dan kerentanan lainnya. Isu pemanfaatan teknologi untuk menuntaskan isu Pendidikan juga terbuka untuk dikembangkan menjadi proyek sosial.`,
-    icon: (
-      <FaGlobe
-        size={30}
-        className='text-[#CD4247]'
-      />
-    ),
+    icon: <FaGlobe size={30} className="text-[#CD4247]" />,
   },
   {
     id: 2,
     title: "Isu Economy & Wellbeing",
     description: `
 Proyek sosial dengan fokus antara lain berkontribusi untuk mengurangi kemiskinan, pengangguran, meningkatan pendapatan, kewirausahaan dan upaya kesejahteraan masyarakat. Berbagai bentuk proyek sosial yang inovatif dan inspiratif terbuka luas untuk menjawab permasalahan kemiskinan, ekonomi, UMKM, dan kesejahteraan sosial.`,
-    icon: (
-      <FaUsers
-        size={30}
-        className='text-[#CD4247]'
-      />
-    ),
+    icon: <FaUsers size={30} className="text-[#CD4247]" />,
   },
   {
     id: 3,
     title: "Isu Nature dan inisiatif keberlanjutan",
     description: `
 Isu global dan masa depan antara lain isu kerusakan lingkungan, kelangkaan energi, problem sampah atau limbah, emisi karbon, kebutuhan teknologi tepat guna, isu Flora - Fauna, Energi alternatif dan isu digitalisasi. Termasuk kategori ini adalah ragam hayati, pelestarian air, olah air untuk menjadi air baku, rekayasa teknologi, start up, gas alam, aplikasi dan rekayasa teknologi lainnya. Tantangan menarik menciptakan kewirausahaan social yang berbasis lingkungan, energi dan teknologi tepat guna.`,
-    icon: (
-      <FaLeaf
-        size={30}
-        className='text-[#CD4247]'
-      />
-    ),
+    icon: <FaLeaf size={30} className="text-[#CD4247]" />,
   },
 ];
 
@@ -130,7 +115,7 @@ export const stages = [
   },
   {
     step: 5,
-    title: "Social Leadership",
+    title: "Social Leadership Training",
     description:
       "Training pemberian pelatihan kepada pemenang sebagai penguatan kepemimpinan social.",
   },
@@ -153,7 +138,7 @@ export const scheduleItems = [
     description: "Mulai daftar untuk mengikuti kompetisi.",
   },
   {
-    time: "12 Juni 2025",
+    time: "12 Juli 2025",
     title: "Deadline Pendaftaran",
     description: "Tutup pendaftaran peserta kompetisi.",
   },
@@ -163,7 +148,7 @@ export const scheduleItems = [
     description: "Proses review seleksi berdasarkan berkas dan karya peserta.",
   },
   {
-    time: "30 Juni 2025",
+    time: "30 Juli 2025",
     title: "Pengumuman Hasil Seleksi",
     description: "Daftar peserta yang lolos ke tahap akhir diumumkan.",
   },
